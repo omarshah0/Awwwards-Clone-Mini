@@ -1,0 +1,51 @@
+header {
+  position: absolute;
+  padding: 0 88px;
+  width: 100%;
+  z-index: 8;
+  @media (max-width: 768px) {
+    padding: 0 32px;
+  }
+  .header-inner {
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    a {
+      font-size: 1.4rem;
+      margin: 0 3rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      &:first-child {
+        margin-left: 0rem;
+      }
+      &:last-child {
+        margin-right: 0rem;
+      }
+      svg {
+        width: 1.2rem;
+        margin-right: 0.5rem;
+        margin-top: 0.1rem;
+      }
+    }
+    nav {
+      width: 100%;
+      text-align: right;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+    .hamburger-menu {
+      cursor: pointer;
+      display: block;
+      span {
+        height: 3px;
+        width: 30px;
+        margin: 6px;
+        display: block;
+        background: $text;
+      }
+    }
+  }
+}

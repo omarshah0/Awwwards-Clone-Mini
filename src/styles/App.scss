@@ -1,0 +1,144 @@
+@import "./normalize.scss";
+@import "./varibles.scss";
+
+//Header
+@import "./components/header.scss";
+@import "./components/banner.scss";
+@import "./components/menu.scss";
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  font-family: "ibm plex sans";
+  font-size: 16px;
+  background-color: #fff;
+  color: $text;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  margin: 2.75rem 0 1.05rem;
+  font-family: "IBM Plex Sans", sans-serif;
+  line-height: 1.15;
+}
+
+h1 {
+  margin-top: 0;
+  font-size: 3.052em;
+}
+
+h2 {
+  font-size: 2.441em;
+}
+
+h3 {
+  font-size: 1.953em;
+}
+
+h4 {
+  font-size: 1.563em;
+}
+
+h5 {
+  font-size: 1.25em;
+}
+
+small,
+.text_small {
+  font-size: 0.8em;
+}
+
+a {
+  text-decoration: none;
+  color: $black;
+  transition: ease-in-out 0.2s;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  span {
+    text-transform: uppercase;
+    font-size: 0.875rem;
+    font-weight: 400;
+    margin-bottom: 1rem;
+    display: block;
+    letter-spacing: 0.05rem;
+  }
+  .columns {
+    display: flex;
+    .column {
+      &:first-child {
+        margin-right: 2rem;
+        @media (max-width: 680px) {
+          margin-right: 8rem;
+        }
+      }
+    }
+  }
+  li {
+    list-style: none;
+    font-size: 0.875rem;
+    font-weight: 300;
+    color: $secondary;
+    margin-bottom: 0.5rem;
+    @media (max-width: 680px) {
+      margin-bottom: 0.75rem;
+    }
+    a {
+      color: $secondary;
+    }
+    &.disabled {
+      opacity: 0.4;
+    }
+  }
+}
+
+.container {
+  flex-grow: 1;
+  margin: 0 auto;
+  padding: 0 32px;
+  position: relative;
+  width: auto;
+  @media (min-width: 1024px) {
+    max-width: 960px;
+  }
+  @media (min-width: 1216px) {
+    max-width: 1152px;
+  }
+  @media (min-width: 1480px) {
+    max-width: 1244px;
+  }
+  &.fluid {
+    padding: 0;
+    margin: 0;
+    max-width: 100% !important;
+  }
+}
+
+.body-lock {
+  overflow-y: hidden;
+}
+
+.cursor {
+  cursor: pointer;
+  height: 2.5rem;
+  width: 2.5rem;
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  background: #e7dede;
+  border-radius: 100%;
+  pointer-events: none;
+}
