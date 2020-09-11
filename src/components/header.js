@@ -1,12 +1,7 @@
+import React from "react"
 import { Link } from "gatsby"
-import React, { useEffect } from "react"
-import { useLocation } from "@reach/router"
 
-const Header = ({ menuState, setMenuState, setCursorHovered }) => {
-  const location = useLocation()
-  useEffect(() => {
-    setMenuState(false)
-  }, [location])
+const Header = ({ setMenu, setMouseHovered }) => {
   return (
     <header>
       <div className="container fluid">
@@ -15,10 +10,10 @@ const Header = ({ menuState, setMenuState, setCursorHovered }) => {
             Pocket.
           </Link>
           <div
-            onClick={() => setMenuState(!menuState)}
             className="hamburger-menu"
-            onMouseEnter={() => setCursorHovered(true)}
-            onMouseLeave={() => setCursorHovered(false)}
+            onClick={() => setMenu(true)}
+            onMouseEnter={() => setMouseHovered(true)}
+            onMouseLeave={() => setMouseHovered(false)}
           >
             <span></span>
             <span></span>

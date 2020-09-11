@@ -5,7 +5,7 @@
     "leftLineFlex": 0,
     "rightLineFlex": 1,
     "thumbnailPosition": 600,
-    "offset": 200,
+    "offset": 100,
     "src": 1
   },
   {
@@ -14,7 +14,7 @@
     "leftLineFlex": 3,
     "rightLineFlex": 1,
     "thumbnailPosition": 200,
-    "offset": -500,
+    "offset": -800,
     "src": 2
   },
   {

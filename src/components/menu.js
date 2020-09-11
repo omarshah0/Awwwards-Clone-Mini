@@ -1,59 +1,52 @@
-import React, { useState, useRef, useEffect } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import { Link } from "gatsby"
-// Framer motion
+import { useLocation } from "@reach/router"
 import { motion, AnimatePresence } from "framer-motion"
-//Gatby Image
 import { Image } from "../components/gatsby-images/image"
-//Data
-import menuList from "../data/products.json"
-//icons
 import { Close } from "../icons/icons.js"
+import data from "../data/products.json"
 
-// Transition Animation
+//Transition
 const transition = { duration: 0.8, ease: [0.6, -0.05, 0.01, 0.9] }
-// Stagger on menu link
-const parent = {
-  animate: { transition: { staggerChildren: 0.1, delayChildren: 1 } },
-}
-// Menu Title Slide Up
+//Variants
 const titleSlideUp = {
   initial: { y: 200 },
   animate: { y: 0 },
 }
-// Menu lines grow
-const lineGrow = {
+const parent = {
+  animate: {
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 1,
+    },
+  },
+}
+const maskAnimation = {
   initial: { width: "100%" },
   animate: { width: 0 },
 }
-
-const Menu = ({ setMenuState, menuState, setCursorHovered, x, y }) => {
-  const closeMenu = () => {
-    setMenuState(!menuState)
-  }
-
+const Menu = ({ menu, setMenu, x, y, setMouseHovered }) => {
+  const location = useLocation()
+  useEffect(() => {
+    setMenu(false)
+  }, [location])
   return (
     <>
       <AnimatePresence>
-        {menuState && (
+        {menu && (
           <>
             <motion.div
-              initial={{ visibility: "hidden" }}
-              exit={{
-                visibility: "hidden",
-                transition: { delay: 1 },
-              }}
-              animate={{
-                visibility: "visible",
-                transition: { delay: 1 },
-              }}
               className="projects"
+              initial={{ visibility: "hidden" }}
+              animate={{ visibility: "visible", transition: { delay: 1 } }}
+              exit={{ visibility: "hidden", transition: { delay: 1 } }}
             >
               <div className="menu-title">Products</div>
               <div
-                onClick={() => closeMenu()}
-                onMouseEnter={() => setCursorHovered(true)}
-                onMouseLeave={() => setCursorHovered(false)}
                 className="close"
+                onClick={() => setMenu(false)}
+                onMouseEnter={() => setMouseHovered(true)}
+                onMouseLeave={() => setMouseHovered(false)}
               >
                 <Close />
               </div>
@@ -64,19 +57,18 @@ const Menu = ({ setMenuState, menuState, setCursorHovered, x, y }) => {
                       variants={parent}
                       initial="initial"
                       animate="animate"
-                      exit="exit"
                     >
-                      {menuList.map(list => (
+                      {data.map(list => (
                         <List
                           key={list.id}
-                          setCursorHovered={setCursorHovered}
+                          title={list.title}
+                          imageData={list.src}
+                          slug={list.id}
                           leftLineFlex={list.leftLineFlex}
                           rightLineFlex={list.rightLineFlex}
-                          title={list.title}
                           thumbnailPosition={list.thumbnailPosition}
+                          setMouseHovered={setMouseHovered}
                           offset={list.offset}
-                          src={list.src}
-                          id={list.id}
                           x={x}
                           y={y}
                         />
@@ -95,84 +87,78 @@ const Menu = ({ setMenuState, menuState, setCursorHovered, x, y }) => {
 }
 
 const List = ({
+  title,
+  imageData,
+  slug,
   leftLineFlex,
   rightLineFlex,
-  title,
   thumbnailPosition,
+  setMouseHovered,
   offset,
-  src,
-  id,
-  setCursorHovered,
   x,
   y,
 }) => {
   const [hoverState, setHoverState] = useState(false)
   const list = useRef()
-  const [state, setState] = useState({
+  const [hoverImgPosition, setHoverImgPosition] = useState({
     top: 0,
     left: 0,
   })
   useEffect(() => {
-    setState({
+    setHoverImgPosition({
       top: list.current.getBoundingClientRect().top,
       left: list.current.getBoundingClientRect().left,
     })
   }, [hoverState])
-
   return (
     <motion.li ref={list}>
-      <Link to={`/product/${id}`}>
+      <Link to={`/products/${slug}`}>
         <div className="wrapper">
           <div className={`line left flex-${leftLineFlex}`}>
             <motion.div
-              variants={lineGrow}
-              className="mask"
+              className="mask left"
+              variants={maskAnimation}
               transition={{ ...transition, duration: 1 }}
             ></motion.div>
           </div>
-          <motion.div
-            onHoverStart={() => setHoverState(true)}
-            onHoverEnd={() => setHoverState(false)}
-            onMouseEnter={() => setCursorHovered(true)}
-            onMouseLeave={() => setCursorHovered(false)}
-            className="title"
-          >
+          <div className="title">
             <h2>
               <motion.div
-                variants={titleSlideUp}
-                transition={transition}
                 className="text"
+                variants={titleSlideUp}
+                onMouseEnter={() => setMouseHovered(true)}
+                onMouseLeave={() => setMouseHovered(false)}
+                onHoverStart={() => setHoverState(true)}
+                onHoverEnd={() => setHoverState(false)}
               >
                 {title}
               </motion.div>
             </h2>
-          </motion.div>
-          <div className="thumbnail" style={{ left: thumbnailPosition }}>
-            <Image src={src} />
-            <motion.div
-              variants={lineGrow}
-              transition={{ ...transition, duration: 1 }}
-              className="mask"
-            ></motion.div>
           </div>
+          <motion.div className="thumbnail" style={{ left: thumbnailPosition }}>
+            <Image src={imageData} />
+            <motion.div
+              className="mask"
+              variants={maskAnimation}
+              transition={{ ...transition, duration: 1 }}
+            ></motion.div>
+          </motion.div>
           <motion.div
-            initial={{ opacity: 0 }}
             className="floating-image"
+            initial={{ opacity: 0 }}
             animate={{
               opacity: hoverState ? 1 : 0,
-              x: x - state.left + offset,
-              y: y - state.top,
+              x: x - hoverImgPosition.top + offset,
+              y: y - hoverImgPosition.left,
             }}
-            transition={{
-              ease: "linear",
-            }}
+            transition={{ ease: "linear" }}
           >
-            <Image src={src} />
+            <Image src={imageData} />
           </motion.div>
           <div className={`line right flex-${rightLineFlex}`}>
             <motion.div
-              variants={lineGrow}
               className="mask right"
+              variants={maskAnimation}
               transition={{ ...transition, duration: 1 }}
             ></motion.div>
           </div>
@@ -183,27 +169,17 @@ const List = ({
 }
 
 const Panels = () => {
-  const [panelComplete, setPanelComplete] = useState(false)
   return (
     <>
       <motion.div
-        initial={{ height: 0 }}
-        animate={{
-          height: [0, window.innerHeight, 0],
-          bottom: [null, 0, 0],
-        }}
-        exit={{
-          height: [0, window.innerHeight, 0],
-          top: [null, 0, 0],
-        }}
-        transition={{ ...transition, duration: 2, times: [0, 0.5, 1] }}
-        style={{ background: panelComplete ? "#e7e7de" : "#e7dee7" }}
         className="left-panel-background"
+        initial={{ height: 0 }}
+        animate={{ height: [0, window.innerHeight, 0], bottom: [null, 0, 0] }}
+        exit={{ height: [0, window.innerHeight, 0], top: [null, 0, 0] }}
+        transition={{ ...transition, duration: 2, times: [0, 0.5, 1] }}
       ></motion.div>
       <motion.div
-        style={{
-          background: panelComplete ? "#e7e7de" : "#e7dee7",
-        }}
+        className="right-panel-background"
         initial={{ height: 0 }}
         animate={{
           height: [0, window.innerHeight, 0],
@@ -211,13 +187,9 @@ const Panels = () => {
         }}
         exit={{
           height: [0, window.innerHeight, 0],
-          bottom: [null, 0, 0],
+          top: [0, 0, window.innerHeight],
         }}
         transition={{ ...transition, duration: 2, times: [0, 0.5, 1] }}
-        className="right-panel-background"
-        onAnimationComplete={() => {
-          setPanelComplete(!panelComplete)
-        }}
       ></motion.div>
     </>
   )

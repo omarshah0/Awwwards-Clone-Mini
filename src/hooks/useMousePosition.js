@@ -4,13 +4,11 @@ export default function useMousePosition() {
   let [mousePosition, setMousePosition] = useState({ x: null, y: null })
 
   useEffect(() => {
-    function handlePosition(e) {
+    function handleMousePosition(e) {
       setMousePosition({ x: e.pageX, y: e.pageY })
     }
-
-    window.addEventListener("mousemove", handlePosition)
-    return () => window.removeEventListener("mousemove", handlePosition)
+    window.addEventListener("mousemove", handleMousePosition)
+    return () => window.addEventListener("mousemove", handleMousePosition)
   }, [])
-
   return mousePosition
 }

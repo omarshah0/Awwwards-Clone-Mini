@@ -1,8 +1,8 @@
 module.exports = {
   siteMetadata: {
-    title: `Awwwards Rebuilt Mini`,
-    description: `A mini rebuilt of a hamburger menu`,
-    author: `@wrongakram`,
+    title: `Awwwards Clone Site`,
+    description: `Clone of Awwwards Website. Mini Built`,
+    author: `@omarfarooqshah`,
   },
   plugins: [
     `gatsby-plugin-react-helmet`,

@@ -1,16 +1,20 @@
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import PropTypes from "prop-types"
-import { useStaticQuery, graphql } from "gatsby"
-import useMousePosition from "../hooks/useMousePosition"
 import { motion } from "framer-motion"
-
+import useMousePosition from "../hooks/useMousePosition"
+import { useStaticQuery, graphql } from "gatsby"
+//Menu
+import Menu from "./menu"
 //Components
 import Header from "./header"
-import Menu from "../components/menu"
+//Test Component Here: if necessary
 //Styles
 import "../styles/App.scss"
 
 const Layout = ({ children }) => {
+  const { x, y } = useMousePosition()
+  const [menu, setMenu] = useState(false)
+  const [mouseHovered, setMouseHovered] = useState(false)
   const siteData = useStaticQuery(graphql`
     query SiteTitleQuery {
       site {
@@ -21,47 +25,30 @@ const Layout = ({ children }) => {
     }
   `)
 
-  // State of our menu
-  const [menuState, setMenuState] = useState(false)
-  // State of to display our custom cursor
-  const [cursorHovered, setCursorHovered] = useState(false)
-
-  // Locking the body from scrolling when menu is opened
-  useEffect(() => {
-    menuState
-      ? document.body.classList.add("body-lock")
-      : document.body.classList.remove("body-lock")
-  }, [menuState])
-
-  //get x and y mouse coordinates
-  const { x, y } = useMousePosition()
-
   return (
     <div className="app">
       <motion.div
+        className="cursor"
+        initial={{ opacity: 1 }}
         animate={{
           x: x - 16,
           y: y - 16,
-          scale: cursorHovered ? 1.2 : 1,
-          opacity: cursorHovered ? 0.8 : 0,
+          scale: mouseHovered ? 1.3 : 1,
+          opacity: mouseHovered ? 0.7 : 1,
         }}
-        transition={{
-          ease: "linear",
-          duration: 0.2,
-        }}
-        className="cursor"
+        transition={{ ease: "linear", duration: 0.1 }}
       ></motion.div>
       <Header
-        setMenuState={setMenuState}
-        setCursorHovered={setCursorHovered}
         siteTitle={siteData.site.siteMetadata.title}
+        setMenu={setMenu}
+        setMouseHovered={setMouseHovered}
       />
       <Menu
-        setCursorHovered={setCursorHovered}
-        menuState={menuState}
-        setMenuState={setMenuState}
+        menu={menu}
+        setMenu={setMenu}
         x={x}
         y={y}
+        setMouseHovered={setMouseHovered}
       />
       <div>
         <main>{children}</main>

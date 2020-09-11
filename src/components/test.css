@@ -1,0 +1,71 @@
+.test {
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(255, 255, 255, 1);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.singlePost {
+  margin: 1rem 0;
+  display: flex;
+  align-items: flex-end;
+  width: 100%;
+  padding: 0 17rem;
+  position: relative;
+}
+
+.left-line {
+  background: black;
+  height: 1px;
+  width: 100%;
+  flex: 1;
+  position: relative;
+}
+
+.left-line::before {
+  content: "";
+  height: 6px;
+  width: 6px;
+  border-radius: 100px;
+  background: black;
+  position: absolute;
+  left: -6px;
+  top: -2.7px;
+}
+
+.right-line {
+  background: black;
+  height: 1px;
+  width: 100%;
+  flex: 1;
+  position: relative;
+}
+
+.right-line::after {
+  content: "";
+  height: 6px;
+  width: 6px;
+  border-radius: 100%;
+  background: black;
+  position: absolute;
+  right: -6px;
+  top: -2.7px;
+}
+
+.title {
+}
+
+.image {
+  height: 80px;
+  width: 150px;
+  background: rgba(244, 235, 210, 1);
+  position: absolute;
+  right: 400px;
+  bottom: 10px;
+}
